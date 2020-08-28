@@ -25,16 +25,16 @@ int main(void) {
 	uint32_t *pPortDOutReg = (uint32_t *) 0x40020C14;
 
 	//1. Enable the clock for GPIO peripheral in the AHB1ENR
-	*pClkCtrlreg |= 0x08;
+	*pClkCtrlreg |= 1 << 3;
 
 	//2. Configure the mode for of the IO pin as output
 	//a. Clear the 24th and 25th bit positions
-	*pPortDModeReg &= 0xFCFFFFFF;
+	*pPortDModeReg &= ~(3 << 24);
 	//b. make the 24th bit position as 1 (SET)
-	*pPortDModeReg |= 0x01000000;
+	*pPortDModeReg |= 1 << 24;
 
 	//.SET 12th bit of the output data register to make I/O pin-12 as HIGH
-	*pPortDOutReg |= 0x1000;
+	*pPortDOutReg |= 1 << 12;
 
 	for(;;);
 }
