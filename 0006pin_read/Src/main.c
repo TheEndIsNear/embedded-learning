@@ -19,17 +19,17 @@
 
 #include <stdint.h>
 
-int main(void)
-{
-	uint32_t *pClkCtrlreg = (uint32_t *) 0x40023830;
-	uint32_t *pPortDModeReg = (uint32_t *) 0x40020C00;
-	uint32_t *pPortDOutReg = (uint32_t *) 0x40020C14;
-	uint32_t *pPortAModeReg = (uint32_t *) 0x40020000;
-	volatile uint32_t const *const pPortAInReg = (uint32_t const *const) 0x40020010;
+int main(void) {
+
+	uint32_t volatile *pClkCtrlreg = (uint32_t *) 0x40023830;
+	uint32_t volatile *pPortDModeReg = (uint32_t *) 0x40020C00;
+	uint32_t volatile *pPortDOutReg = (uint32_t *) 0x40020C14;
+	uint32_t volatile *pPortAModeReg = (uint32_t *) 0x40020000;
+	uint32_t const volatile *const pPortAInReg = (uint32_t const *const) 0x40020010;
 
 	//1. Enable the clock for GPIO peripheral in the AHB1ENR
 	// Enables GPIOA and GPIOD
-	*pClkCtrlreg |= 9;
+	*pClkCtrlreg |= 0x9;
 
 	//2. Configure the mode of the IO pin as output
 	//a. Clear the 24th and 25th bit positions
@@ -38,15 +38,14 @@ int main(void)
 	*pPortDModeReg |= 1 << 24;
 
 	//3. Configure the mode of the IO as input
-	*pPortAModeReg &= ~3;
+	*pPortAModeReg &= ~0x3;
 
 	for(;;) {
-
-		if(*pPortAInReg & 0x1) {
+		uint8_t input = (uint8_t) *pPortAInReg & 0x1;
+		if(input) {
 			*pPortDOutReg |= 1 << 12;
 		} else {
 			*pPortDOutReg &= ~(1 << 12);
 		}
-		for(uint32_t i=0; i < 1000; i++);
 	}
 }
