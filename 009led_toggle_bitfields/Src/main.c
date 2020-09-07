@@ -21,23 +21,22 @@
 
 int main(void) {
 
-	RCC_AHB1ENR_t volatile *const pClkCtrlReg = (RCC_AHB1ENR_t *) 0x40023830;
-	GPIOx_MODER volatile *const pPortDModeReg = (GPIOx_MODER *) 0x40020C00;
-	GPIOx_ODR volatile *const pPortDOutReg = (GPIOx_ODR *) 0x40020C14;
+	RCC_AHB1ENR_t volatile *const pClkCtrlReg = ADDR_REG_AHB1ENR;
+	GPIOx_MODER volatile *const pPortDModeReg = ADDR_REG_GPIOD_MODE;
+	GPIOx_ODR volatile *const pPortDOutReg = ADDR_REG_GPIOD_OD;
 
-
-	pClkCtrlReg->gpiod_en = 1;
-	pPortDModeReg->pin_12 = 1;
+	pClkCtrlReg->gpiod_en = CLOCK_ENABLE;
+	pPortDModeReg->pin_12 = MODE_CONF_OUTPUT;
 
 	for(;;) {
-		pPortDOutReg->pin_12 = 1;
+		pPortDOutReg->pin_12 = LED_ON;
 
 		// introduce small human observable delay
-		for(uint32_t volatile i=0; i < 300000; i++);
+		for(uint32_t volatile i=0; i < DELAY_COUNT; i++);
 
-		pPortDOutReg->pin_12 = 0;
+		pPortDOutReg->pin_12 = LED_OFF;
 
-		for(uint32_t volatile i=0; i < 300000; i++);
+		for(uint32_t volatile i=0; i < DELAY_COUNT; i++);
 
 	}
 }

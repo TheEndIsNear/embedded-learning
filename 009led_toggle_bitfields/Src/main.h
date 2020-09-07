@@ -3,6 +3,15 @@
 
 #include <stdint.h>
 
+#define LED_ON (1)
+#define LED_OFF (0)
+#define ADDR_REG_AHB1ENR ((RCC_AHB1ENR_t *) 0x40023830)
+#define ADDR_REG_GPIOD_MODE ((GPIOx_MODER *) 0x40020C00)
+#define ADDR_REG_GPIOD_OD ((GPIOx_ODR *) 0x40020C14)
+#define CLOCK_ENABLE (1)
+#define MODE_CONF_OUTPUT (1)
+#define DELAY_COUNT (300000UL)
+
 typedef struct {
 	uint32_t gpioa_en:1;
 	uint32_t gpiob_en:1;
