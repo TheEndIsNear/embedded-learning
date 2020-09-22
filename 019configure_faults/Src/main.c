@@ -61,10 +61,28 @@ void BusFault_Handler(void) {
 	while(1);
 }
 
-void UsageFault_Handler(void) {
+__attribute__ ((naked)) void UsageFault_Handler(void) {
+	// here we extracted the value of MSP which happens to be the
+	// base address of the stack frame(thread mode) which got saved during the exception entry
+	// from the thread mode to handler mode
+	__asm ("MRS r0,MSP");
+	__asm ("B UsageFault_Handler_c");
+}
+
+void UsageFault_Handler_c(uint32_t *pBaseStackFrame) {
+
 	uint32_t *pUFSR = (uint32_t*)0xE000ED2A;
 	printf("exception : Usagefault");
 	printf("UFSR = %lx\n", (*pUFSR) & 0xFFFF);
+	printf("MSP = %p\n", pBaseStackFrame);
+	printf("Value of R0 = %lx\n", pBaseStackFrame[0]);
+	printf("Value of R1 = %lx\n", pBaseStackFrame[1]);
+	printf("Value of R2 = %lx\n", pBaseStackFrame[2]);
+	printf("Value of R3 = %lx\n", pBaseStackFrame[3]);
+	printf("Value of R12 = %lx\n", pBaseStackFrame[4]);
+	printf("Value of LR = %lx\n", pBaseStackFrame[5]);
+	printf("Value of PC = %lx\n", pBaseStackFrame[6]);
+	printf("Value of XPSR = %lx\n", pBaseStackFrame[7]);
 	while(1);
 }
 
