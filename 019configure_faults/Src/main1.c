@@ -33,7 +33,7 @@ int main(void) {
 
 	*pSHCSR |= (1 << 16); // mem manage
 	*pSHCSR |= (1 << 17); // bus fault
-	*pSHCSR |= (1 << 18); // usage fault
+	//*pSHCSR |= (1 << 18); // usage fault
 
 	// 2. enable divide by zero trap
 	uint32_t *pCCR = (uint32_t*) 0xE000ED14;
@@ -46,7 +46,7 @@ int main(void) {
 }
 
 // 2. implement the fault handlers
-void HardFault_Hander(void) {
+void HardFault_Handler(void) {
 	printf("exception : Hardfault");
 	while(1);
 }
