@@ -174,6 +174,8 @@ void SysTick_Handler(void) {
 	// 2. Using that PSP value store SF2 (R4 to R11)
 	__asm volatile("STMDB R0!,{R4-R11}");
 
+	__asm volatile("PUSH {LR}");
+
 	// 3. Save the current value of PSP
 	__asm volatile("BL save_psp_value");
 
@@ -190,4 +192,12 @@ void SysTick_Handler(void) {
 
 	// 4. update PSP and exit
 	__asm volatile("MSR PSP,R0");
+
+	__asm volatile("POP {LR}");
+
+	__asm volatile("BX LR");
+}
+
+void HardFault_Handler(void) {
+	printf("Received a hard fault\n");
 }
