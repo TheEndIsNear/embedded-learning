@@ -17,6 +17,7 @@
  ******************************************************************************
  */
 
+#include <stdio.h>
 #include <stdint.h>
 #include "main.h"
 #include "led.h"
@@ -289,16 +290,16 @@ void SysTick_Handler(void) {
 }
 
 void HardFault_Handler(void) {
-	//printf("Exception : HArdfault\n");
+	printf("Exception : HArdfault\n");
 	while(1);
 }
 
 void MemManage_Handler(void) {
-	//printf("Exception: MemManage\n");
+	printf("Exception: MemManage\n");
 	while(1);
 }
 
-void BusFault_HAndler(void) {
-	//printf("Exception: BusFAult\n");
+void BusFault_Handler(void) {
+	printf("Exception: BusFAult\n");
 	while(1);
 }
